@@ -1,3 +1,3 @@
 # LMS "Homework" backend
 
-Here will be backend for LMS codename "Homework".
+Here will be backend on django for LMS codename "Homework".
