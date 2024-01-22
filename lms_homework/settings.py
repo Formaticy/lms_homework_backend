@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -77,8 +81,12 @@ WSGI_APPLICATION = 'lms_homework.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.getenv('DJANGO_DATABASE_ENGINE'),
+        'NAME': os.getenv('DJANGO_DATABASE_NAME'),
+        'USER': os.getenv('DJANGO_DATABASE_USER'),
+        'PASSWORD': os.getenv('DJANGO_DATABASE_PASSWORD'),
+        'HOST': os.getenv('DJANGO_DATABASE_HOST'),
+        'PORT': os.getenv('DJANGO_DATABASE_PORT')
     }
 }
 
