@@ -49,6 +49,7 @@ class Person(models.Model):
 
     type = models.ForeignKey('lms_api.PersonType', on_delete=models.RESTRICT)
     courses = models.ManyToManyField('lms_api.Course', through='Role')
+    roles = models.ManyToManyField('lms_api.Role', db_table='Person_Roles')
 
     class Meta:
         db_table = "Person"
