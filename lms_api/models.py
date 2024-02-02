@@ -49,8 +49,6 @@ class Person(models.Model):
 
     type = models.ForeignKey('lms_api.PersonType', on_delete=models.RESTRICT)
     courses = models.ManyToManyField('lms_api.Course', through='Role')
-    tasks = models.ManyToManyField('lms_api.Task', through='Assignment') # здесь сомнения, как реализовать правльно связь м2м с tasks через промежуточные таблицы Assignment и Result. по итогу убрал связь м2м с Result
-    # results = models.ManyToManyField('lms_api.Task', through='Result') # здесь сомнения, как реализовать правльно связь м2м с tasks через промежуточные таблицы Assignment и Result
 
     class Meta:
         db_table = "Person"
@@ -90,7 +88,7 @@ class Result(models.Model):
     points = models.FloatField()
 
     person = models.ForeignKey('lms_api.Person', null=True, on_delete=models.SET_NULL)
-    task = models.ForeignKey('lms_api.Task', null=True, on_delete=models.SET_NULL)
+    assignment = models.ForeignKey('lms_api.Assignment', null=True, on_delete=models.SET_NULL)
     files = models.ManyToManyField('lms_api.File', db_table='FileForResult')
 
     class Meta:
