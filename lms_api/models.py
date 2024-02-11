@@ -27,27 +27,26 @@ class Person(models.Model):
     mail = models.EmailField()
 
     type = models.ForeignKey("lms_api.PersonType", on_delete=models.RESTRICT)
-    courses = models.ManyToManyField("lms_api.Course", through="Role")
-    roles = models.ManyToManyField("lms_api.Role", db_table="Person_Roles", related_name='persons')
+    courses = models.ManyToManyField("lms_api.Course", through="RoleOnCourse")
 
     class Meta:
         db_table = "Person"
 
 
-class RoleType(models.Model):
+class RoleOnCourseType(models.Model):
     type = models.CharField(max_length=30)
 
     class Meta:
-        db_table = "RoleType"
+        db_table = "RoleOnCourseType"
 
 
-class Role(models.Model):
-    type = models.ForeignKey("lms_api.RoleType", on_delete=models.RESTRICT)
+class RoleOnCourse(models.Model):
+    type = models.ForeignKey("lms_api.RoleOnCourseType", on_delete=models.RESTRICT)
     person = models.ForeignKey("lms_api.Person", null=True, on_delete=models.SET_NULL)
     course = models.ForeignKey("lms_api.Course", null=True, on_delete=models.SET_NULL)
 
     class Meta:
-        db_table = "Role"
+        db_table = "RoleOnCourse"
 
 
 class Course(models.Model):
@@ -87,7 +86,7 @@ class Assignment(models.Model):
 
     assigner = models.ForeignKey("lms_api.Person", null=True, on_delete=models.SET_NULL)
     task = models.ForeignKey("lms_api.Task", null=True, on_delete=models.SET_NULL)
-    role = models.ForeignKey("lms_api.Role", null=True, on_delete=models.SET_NULL)
+    role_on_course_type = models.ForeignKey("lms_api.RoleOnCourseType", null=True, on_delete=models.SET_NULL)
     course = models.ForeignKey("lms_api.Course", null=True, on_delete=models.SET_NULL)
 
     class Meta:
