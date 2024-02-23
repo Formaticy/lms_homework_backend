@@ -1,28 +1,30 @@
+name: lms_hw_backend
+
 services:
-  web:
+  backend:
+    container_name: backend
     build: .
     command: sh -c "
            python manage.py makemigrations
         && python manage.py migrate
         && python manage.py runserver ${BACKEND_HOST}:${BACKEND_PORT_CONTAINER}
       "
+    env_file: .env
     volumes:
       - .:/app
     ports:
       - "${BACKEND_PORT_HOST}:${BACKEND_PORT_CONTAINER}"
-    env_file:
-      - .env
     depends_on:
       db:
         condition: service_healthy
   db:
+    container_name: db
     image: postgres
+    env_file: .env
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     ports:
       - "${POSTGRES_PORT_HOST}:${POSTGRES_PORT_DEFAULT}"
-    env_file:
-      - .env
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
       interval: 10s
@@ -31,10 +33,10 @@ services:
       start_period: 10s
       start_interval: 5s
   pgadmin:
+    container_name: pgadmin
     image: dpage/pgadmin4
     restart: always
-    env_file:
-      - .env
+    env_file: .env
     ports:
       - "${PGADMIN_PORT_HOST}:${PGADMIN_PORT_DEFAULT}"
     depends_on:
